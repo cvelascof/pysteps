@@ -16,11 +16,12 @@ from pysteps.io import importers, exporters
 
 _importer_methods = dict()
 _importer_methods['bom_rf3'] = importers.import_bom_rf3
+_importer_methods['fmi_geotiff'] = importers.import_fmi_geotiff
 _importer_methods['fmi_pgm'] = importers.import_fmi_pgm
 _importer_methods['mch_gif'] = importers.import_mch_gif
 _importer_methods['mch_hdf5'] = importers.import_mch_hdf5
 _importer_methods['mch_metranet'] = importers.import_mch_metranet
-_importer_methods['odim_hdf5'] = importers.import_odim_hdf5
+_importer_methods['opera_hdf5'] = importers.import_opera_hdf5
 _importer_methods['knmi_hdf5'] = importers.import_knmi_hdf5
 
 _exporter_methods = dict()
@@ -48,6 +49,10 @@ def get_method(name, method_type):
         |              |  archive containing precipitation intensity           |
         |              |  composites.                                          |
         +--------------+-------------------------------------------------------+
+        | fmi_geotiff  |  GeoTIFF files used in the Finnish Meteorological     |
+        |              |  Institute (FMI) archive, containing reflectivity     |
+        |              |  composites (dBZ).                                    |
+        +--------------+-------------------------------------------------------+
         | fmi_pgm      |  PGM files used in the Finnish Meteorological         |
         |              |  Institute (FMI) archive, containing reflectivity     |
         |              |  composites (dBZ).                                    |
@@ -60,7 +65,7 @@ def get_method(name, method_type):
         | mch_metranet | metranet files in the MeteoSwiss (MCH) archive        |
         |              | containing precipitation composites.                  |
         +--------------+-------------------------------------------------------+
-        | odim_hdf5    | ODIM HDF5 file format used by Eumetnet/OPERA.         |
+        | opera_hdf5   | ODIM HDF5 file format used by Eumetnet/OPERA.         |
         +--------------+-------------------------------------------------------+
         | knmi_hdf5    |  HDF5 file format used by KNMI.                       |
         +--------------+-------------------------------------------------------+

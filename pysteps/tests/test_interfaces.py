@@ -44,7 +44,6 @@ def test_extrapolation_interface():
 
     from pysteps.extrapolation.interface import eulerian_persistence as eulerian
     from pysteps.extrapolation.interface import _do_nothing as do_nothing
-    from pysteps.extrapolation.interface import _return_none
 
     method_getter = extrapolation.interface.get_method
 
@@ -77,20 +76,22 @@ def test_io_interface():
     """Test the io module interface."""
 
     from pysteps.io import import_bom_rf3
+    from pysteps.io import import_fmi_geotiff
     from pysteps.io import import_fmi_pgm
     from pysteps.io import import_mch_gif
     from pysteps.io import import_mch_hdf5
     from pysteps.io import import_mch_metranet
-    from pysteps.io import import_odim_hdf5
+    from pysteps.io import import_opera_hdf5
     from pysteps.io import initialize_forecast_exporter_netcdf
 
     # Test importers
     valid_names_func_pair = [('bom_rf3', import_bom_rf3),
+                             ('fmi_geotiff', import_fmi_geotiff),
                              ('fmi_pgm', import_fmi_pgm),
                              ('mch_gif', import_mch_gif),
                              ('mch_hdf5', import_mch_hdf5),
                              ('mch_metranet', import_mch_metranet),
-                             ('odim_hdf5', import_odim_hdf5),
+                             ('opera_hdf5', import_opera_hdf5),
                              ('mch_gif', import_mch_gif),
                              ('mch_gif', import_mch_gif),
                              ('mch_gif', import_mch_gif), ]
@@ -98,7 +99,7 @@ def test_io_interface():
     def method_getter(name):
         return pysteps.io.interface.get_method(name, 'importer')
 
-    invalid_names = ['odim', 'mch', 'fmi']
+    invalid_names = ['opera', 'mch', 'fmi']
     _generic_interface_test(method_getter, valid_names_func_pair, invalid_names)
 
     # Test exporters
@@ -204,19 +205,35 @@ def test_nowcasts_interface():
 def test_utils_interface():
     """Test utils module interface."""
 
+    from pysteps.utils import arrays
+    from pysteps.utils import cleansing
     from pysteps.utils import conversion
-    from pysteps.utils import transformation
     from pysteps.utils import dimension
+    from pysteps.utils import images
+    from pysteps.utils import interpolate
+    from pysteps.utils import spectral
+    from pysteps.utils import transformation
 
     method_getter = pysteps.utils.interface.get_method
 
-    valid_names_func_pair = [('mm/h', conversion.to_rainrate),
+    valid_names_func_pair = [('centred_coord', arrays.compute_centred_coord_array),
+                             ('decluster', cleansing.decluster),
+                             ('detect_outliers', cleansing.detect_outliers),
+                             ('mm/h', conversion.to_rainrate),
                              ('rainrate', conversion.to_rainrate),
                              ('mm', conversion.to_raindepth),
                              ('raindepth', conversion.to_raindepth),
                              ('dbz', conversion.to_reflectivity),
                              ('reflectivity', conversion.to_reflectivity),
-                             ('rainrate', conversion.to_rainrate),
+                             ('accumulate', dimension.aggregate_fields_time),
+                             ('clip', dimension.clip_domain),
+                             ('square', dimension.square_domain),
+                             ('upscale', dimension.aggregate_fields_space),
+                             ('shitomasi', images.ShiTomasi_detection),
+                             ('morph_opening', images.morph_opening),
+                             ('rbfinterp2d', interpolate.rbfinterp2d),
+                             ('rapsd', spectral.rapsd),
+                             ('rm_rdisc', spectral.remove_rain_norain_discontinuity),
                              ('boxcox', transformation.boxcox_transform),
                              ('box-cox', transformation.boxcox_transform),
                              ('db', transformation.dB_transform),
@@ -224,10 +241,6 @@ def test_utils_interface():
                              ('log', transformation.boxcox_transform),
                              ('nqt', transformation.NQ_transform),
                              ('sqrt', transformation.sqrt_transform),
-                             ('accumulate', dimension.aggregate_fields_time),
-                             ('clip', dimension.clip_domain),
-                             ('square', dimension.square_domain),
-                             ('upscale', dimension.aggregate_fields_space),
                              ]
 
     invalid_names = ['random', 'invalid']
