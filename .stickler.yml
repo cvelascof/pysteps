@@ -1,7 +1,10 @@
 linters:
   flake8:
+    python: 3
     fixer: true
   shellcheck:
     shell: bash
+  pep8:
+    python: 3
 fixers:
   enable: true
